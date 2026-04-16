@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dippd – Price Drop Alerts for Chrome</title>
+  <meta name="description" content="Track product prices on Amazon, Walmart and eBay. Get instant alerts when prices drop to your target. Free Chrome extension.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #0f0f0e; color: #f0efe8; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .nav-logo { display: flex; align-items: center; gap: 8px; }
+    .nav-logo-icon { width: 32px; height: 32px; background: #FF4D1C; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; }
+    .nav-logo-text { font-size: 20px; font-weight: 800; color: #f0efe8; }
+    .nav-cta { background: #FF4D1C; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; transition: opacity 0.15s; }
+    .nav-cta:hover { opacity: 0.9; }
+
+    /* ── Hero ── */
+    .hero { text-align: center; padding: 80px 20px 60px; max-width: 700px; margin: 0 auto; }
+    .hero-badge { display: inline-block; background: rgba(255,77,28,0.15); color: #FF4D1C; border: 1px solid rgba(255,77,28,0.3); padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+    .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+    .hero h1 span { color: #FF4D1C; }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.55); margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #FF4D1C; color: #fff; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px; transition: opacity 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #f0efe8; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px; border: 1px solid rgba(255,255,255,0.1); transition: background 0.15s; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    /* ── Stats ── */
+    .stats { display: flex; justify-content: center; gap: 60px; padding: 40px 20px; border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); flex-wrap: wrap; }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 32px; font-weight: 800; color: #00C896; }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+    /* ── How it works ── */
+    .section { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
+    .section-label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #FF4D1C; margin-bottom: 12px; }
+    .section h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 48px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .step { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px; }
+    .step-num { width: 36px; height: 36px; background: #FF4D1C; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; margin-bottom: 16px; }
+    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ── Features ── */
+    .features { background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .features-inner { max-width: 900px; margin: 0 auto; padding: 80px 20px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; }
+    .feature { display: flex; flex-direction: column; gap: 10px; }
+    .feature-icon { font-size: 28px; }
+    .feature h3 { font-size: 16px; font-weight: 700; }
+    .feature p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    /* ── CTA ── */
+    .cta-section { text-align: center; padding: 80px 20px; }
+    .cta-section h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .cta-section p { font-size: 16px; color: rgba(255,255,255,0.45); margin-bottom: 32px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo-icon { width: 24px; height: 24px; background: #FF4D1C; color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
+    footer p { font-size: 13px; color: rgba(255,255,255,0.3); }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 36px; }
+      nav { padding: 16px 20px; }
+      .stats { gap: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-icon">D</div>
+      <span class="nav-logo-text">Dippd</span>
+    </div>
+    <a href="#" class="nav-cta">Add to Chrome — Free</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">🆓 100% Free Chrome Extension</div>
+    <h1>Never pay full price <span>again.</span></h1>
+    <p>Dippd tracks product prices on Amazon, Walmart and eBay. Get instant alerts the moment prices drop to your target.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-primary">
+        <span>🧩</span> Add to Chrome — It's Free
+      </a>
+      <a href="#how" class="btn-secondary">See how it works</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">$0</div>
+      <div class="stat-label">Cost to users — always free</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Major retailers supported</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">60s</div>
+      <div class="stat-label">To start tracking any product</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Silent background monitoring</div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section" id="how">
+    <div class="section-label">How it works</div>
+    <h2>Start saving in 3 simple steps</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Visit any product</h3>
+        <p>Go to any product page on Amazon, Walmart, or eBay. Dippd instantly reads the current price.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Set your target price</h3>
+        <p>Click the Dippd icon and enter the price you want to pay. We suggest 10% below current as a starting point.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Get alerted instantly</h3>
+        <p>When the price drops to your target, Dippd sends you a Chrome notification and email alert immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features">
+    <div class="features-inner">
+      <div class="section-label">Features</div>
+      <h2>Everything you need to shop smarter</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">🔔</div>
+          <h3>Instant Alerts</h3>
+          <p>Chrome notifications and email alerts the moment your target price is hit.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <h3>Price History</h3>
+          <p>See how prices have changed over time so you know if a deal is real.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🛍️</div>
+          <h3>Multi-Store</h3>
+          <p>Track products across Amazon, Walmart, and eBay all in one place.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <h3>Private by Default</h3>
+          <p>Your watchlist is stored locally on your device. No account needed.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <h3>Works Silently</h3>
+          <p>Dippd monitors prices in the background without slowing your browser.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💰</div>
+          <h3>Always Free</h3>
+          <p>Core price tracking is completely free. No credit card ever required.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Start saving money today.</h2>
+    <p>Join thousands of smart shoppers who never overpay.</p>
+    <a href="#" class="btn-primary" style="display: inline-flex;">
+      <span>🧩</span> Add Dippd to Chrome — Free
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">
+      <div class="footer-logo-icon">D</div>
+      <span style="font-weight: 700; font-size: 15px;">Dippd</span>
+    </div>
+    <p>© 2025 Dippd. All rights reserved.</p>
+    <p style="color: rgba(255,255,255,0.3); font-size: 13px;">Made with ❤️ for smart shoppers.</p>
+  </footer>
+
+</body>
+</html>
